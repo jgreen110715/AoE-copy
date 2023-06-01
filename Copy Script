@@ -1,0 +1,34 @@
+import os
+import shutil
+import glob
+import datetime
+
+source_directory = r"C:\Users\jgree\Games\Age of Empires 2 DE\76561199113144823\savegame"
+destination_directory = r"G:\My Drive\AoE 2 Saved replays"
+
+# Get current date and time
+now = datetime.datetime.now()
+
+# Format the date and time to match the desired file naming convention
+date_string = now.strftime("%Y%m%d")
+
+# Create a file name pattern to match files starting with "MP" and ending with ".aoe2record"
+file_pattern = "MP*.aoe2record"
+
+# Get the list of files matching the pattern in the source directory
+matching_files = glob.glob(os.path.join(source_directory, file_pattern))
+
+# Copy each matching file to the destination directory if it doesn't already exist there
+for file_path in matching_files:
+    # Extract the file name from the full path
+    file_name = os.path.basename(file_path)
+    
+    # Construct the destination file path by combining the destination directory, date string, and file name
+    destination_file_path = os.path.join(destination_directory, date_string + "_" + file_name)
+    
+    # Check if the destination file already exists
+    if not os.path.exists(destination_file_path):
+        # Copy the file to the destination directory
+        shutil.copy(file_path, destination_file_path)
+
+print("File copying completed!")
